@@ -33,7 +33,7 @@ targets:
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         NSHumanReadableCopyright: "hexul"
         SUFeedURL: https://raw.githubusercontent.com/hex/Noter/main/appcast.xml
-        SUPublicEDKey: AvfZk+goO2PNLNs69+o7SfePAMl/w5PLLO+TZ69IKVI=
+        SUPublicEDKey: QM7biud8LkYn5fHBd43Tb3SVYKXVdW7C4btxgLs4IXg=
     entitlements:
       path: Noter.entitlements
       properties:
