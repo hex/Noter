@@ -1,12 +1,10 @@
-<p align="center">
-  <img src="noter-icon.png" width="128" alt="Noter icon">
-</p>
+<img src="https://raw.githubusercontent.com/hex/Noter/main/docs/banner.svg" alt="Noter" width="100%" />
 
 <h1 align="center">Noter</h1>
 
 <p align="center">
-  Sticky notes at the edge of your Mac screen.<br>
-  A frosted rail of colored dots, one per note; click a dot and the note opens as a glass card beside it.
+  A frosted rail of colored dots at the edge of your screen, one per note;<br>
+  click a dot and the note opens as a glass card beside it.
 </p>
 
 <p align="center">
