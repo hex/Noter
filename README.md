@@ -1,12 +1,5 @@
 <img src="https://raw.githubusercontent.com/hex/Noter/main/docs/banner.svg" alt="Noter" width="100%" />
 
-<h1 align="center">Noter</h1>
-
-<p align="center">
-  A frosted rail of colored dots at the edge of your screen, one per note;<br>
-  click a dot and the note opens as a glass card beside it.
-</p>
-
 <p align="center">
   <img src="https://img.shields.io/badge/macOS-14%2B-blue" alt="macOS 14+">
   <img src="https://img.shields.io/badge/Swift-5.9-orange" alt="Swift 5.9">
