@@ -85,13 +85,11 @@ Menu bar icon > Settings… (⌘,), or right-click anywhere on the rail. Stored 
 
 ## Icon
 
-`Noter/noter-icon.png` is the 1024 source squircled 824-in-1024 for macOS 15 and earlier, which
-do not mask icons. `Noter/noter-icon-fullbleed.png` is the unmasked square for Icon Composer on
-macOS 26, where the system draws the shape and glass; open it there and export a `.icon` next to
-the `.icns`. `Noter/Icon/AppIcon.iconset` and `AppIcon.icns` are sliced from it, and
-`Assets.xcassets/AppIcon.appiconset` is sliced from the full-bleed square instead, because macOS 26
-masks it itself and a pre-squircled image would render doubly inset; on macOS 14 and 15 it shows as
-an unmasked square until the `.icon` is added. The menu bar uses a code-drawn template mark (`App/AppIcon.swift`).
+`Noter.icon` is the app icon in Icon Composer format: `icon.json` plus one layer in `Assets/`, the
+full-bleed artwork (`noter-icon-fullbleed.png`, which keeps its own painted shadows). macOS 26
+masks it and adds its glass rim; for macOS 14 and 15 actool flattens it into `Noter.icns` at build
+time, so no `.appiconset` is needed. `noter-icon.png` and `Icon/` are the pre-squircled legacy exports
+kept for the README and docs. The menu bar uses a code-drawn template mark (`App/AppIcon.swift`).
 
 ## Layout
 

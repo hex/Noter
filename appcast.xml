@@ -6,6 +6,17 @@
     <description>Noter updates</description>
     <language>en</language>
     <item>
+      <title>Version 2026.9.1</title>
+      <pubDate>Mon, 14 Sep 2026 18:28:10 +0000</pubDate>
+      <sparkle:version>2026091402</sparkle:version>
+      <sparkle:shortVersionString>2026.9.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <enclosure url="https://github.com/hex/Noter/releases/download/v2026.9.1/Noter-2026.9.1.zip"
+                 length="5392071"
+                 type="application/octet-stream"
+                 sparkle:edSignature="xUMkRlo3VDrrOuqq57Y0upA5TyFL2wlNwNWn0A/Tq3i2FfJlWW+D9VbonIp2+z4Y0V0PMOiiaf55R71mpxeeBA==" />
+    </item>
+    <item>
       <title>Version 2026.9.0</title>
       <pubDate>Mon, 14 Sep 2026 18:04:14 +0000</pubDate>
       <sparkle:version>2026091401</sparkle:version>

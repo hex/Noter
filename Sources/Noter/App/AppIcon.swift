@@ -11,9 +11,9 @@ enum AppIcon {
         return image
     }
 
-    /// The app icon from the asset catalog, for About. Falls back to the drawn mark when running outside the bundle.
+    /// The app's own icon as macOS resolves it (the Icon Composer layers on macOS 26, the icns before), for About.
     static func artwork() -> NSImage {
-        NSImage(named: "AppIcon") ?? draw(size: 64, lineWidth: 1.2)
+        NSApp.applicationIconImage
     }
 
     static func draw(size: CGFloat, lineWidth: CGFloat) -> NSImage {
