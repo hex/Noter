@@ -1,7 +1,21 @@
-# Noter
+<p align="center">
+  <img src="noter-icon.png" width="128" alt="Noter icon">
+</p>
 
-Sticky notes that live at the right edge of your Mac screen. A frosted rail of colored dots, one per
-note; click a dot and the note opens as a glass card beside it. Menu bar only, no Dock icon.
+<h1 align="center">Noter</h1>
+
+<p align="center">
+  Sticky notes at the edge of your Mac screen.<br>
+  A frosted rail of colored dots, one per note; click a dot and the note opens as a glass card beside it.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/macOS-14%2B-blue" alt="macOS 14+">
+  <img src="https://img.shields.io/badge/Swift-5.9-orange" alt="Swift 5.9">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License">
+</p>
+
+---
 
 ## Build and run
 
@@ -94,3 +108,7 @@ an unmasked square until the `.icon` is added. The menu bar uses a code-drawn te
 - `Sources/Noter/Views` rail strip, note card, glass surface, shared metrics
 - `Sources/Noter/Model` note, store, panel state, content kind, inbox, enricher, settings, login item
 - `Sources/Noter/Persistence` markdown plus JSON sidecar storage
+
+## License
+
+MIT
