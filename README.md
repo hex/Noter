@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/hex/Noter/main/docs/banner.svg" alt="Noter" width="100%" />
+<img src="https://raw.githubusercontent.com/hex/Noter/main/docs/banner-v2.svg" alt="Noter" width="100%" />
 
 <p align="center">
   <img src="https://img.shields.io/badge/macOS-14%2B-blue" alt="macOS 14+">
