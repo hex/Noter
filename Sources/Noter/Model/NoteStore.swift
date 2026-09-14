@@ -22,16 +22,28 @@ final class NoteStore {
 
     @discardableResult
     func create(title: String, colorName: String? = nil) throws -> Note {
-        let color = colorName ?? nextAutoColor()
-        let note = Note(title: title, colorName: color)
+        try add(Note(title: title, colorName: colorName ?? nextAutoColor()))
+    }
+
+    /// Saves a note built by the caller, once, complete.
+    @discardableResult
+    func add(_ note: Note) throws -> Note {
         try storage.save(note)
         notes.insert(note, at: 0)
+        sortNotes()
         return note
     }
+
+    var nextColor: String { nextAutoColor() }
 
     func update(_ note: Note) throws {
         try storage.save(note)
         if let index = notes.firstIndex(where: { $0.id == note.id }) {
+            // Same sort key: swap in place so the rail keeps its order and nothing else moves.
+            if notes[index].modifiedAt == note.modifiedAt {
+                notes[index] = note
+                return
+            }
             notes.remove(at: index)
         }
         notes.insert(note, at: 0)
@@ -59,6 +71,12 @@ final class NoteStore {
 
     func loadFromDisk() throws {
         notes = try storage.loadAll()
+    }
+
+    /// Reads the library on a background thread and publishes it; the panel appears meanwhile.
+    func loadFromDiskInBackground() async throws {
+        let storage = self.storage
+        notes = try await Task.detached(priority: .userInitiated) { try storage.loadAll() }.value
     }
 
     // MARK: - Private

@@ -31,6 +31,10 @@ that Sparkle compares to offer updates; both live in `project.yml`.
 Noter watches `iCloud Drive/Shortcuts/Noter/Inbox`, the folder Shortcuts' Save File action writes to. Anything the phone drops there as JSON becomes a note, and
 a model writes a title, a four-line summary, and tags for it.
 
+A link in a note gets a preview card from the page's OpenGraph tags. GitHub repos and issues,
+Reddit posts, YouTube videos, Hacker News items and X posts come from each site's own API
+instead, with a detail line (stars, points, comments, channel) and the avatar or thumbnail.
+
 ### 1. Have an agent CLI installed
 
 Enrichment runs through a local agent CLI in print mode, so Noter holds no API key. Default is

@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIconName</key>
-	<string>AppIcon</string>
+	<string>Noter</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -29,6 +29,6 @@
 	<key>SUFeedURL</key>
 	<string>https://raw.githubusercontent.com/hex/Noter/main/appcast.xml</string>
 	<key>SUPublicEDKey</key>
-	<string>AvfZk+goO2PNLNs69+o7SfePAMl/w5PLLO+TZ69IKVI=</string>
+	<string>QM7biud8LkYn5fHBd43Tb3SVYKXVdW7C4btxgLs4IXg=</string>
 </dict>
 </plist>

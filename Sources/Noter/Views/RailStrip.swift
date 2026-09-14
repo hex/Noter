@@ -46,7 +46,8 @@ extension RailStrip {
     /// The first seven dots are always in view; beyond that the column scrolls under a fade.
     @ViewBuilder
     private var dots: some View {
-        let column = VStack(spacing: RailMetrics.dotGap) {
+        // Lazy: dots past the visible window are not built until scrolled to.
+        let column = LazyVStack(spacing: RailMetrics.dotGap) {
             ForEach(notes) { note in
                 RailDot(note: note, isOpen: note.id == openNoteID, faviconURL: faviconURL(note), onTap: { onSelect(note) }, onHover: onHover)
                     .transition(.scale(scale: 0.4).combined(with: .opacity))
@@ -99,7 +100,7 @@ struct RailDot: View {
     @State private var isPressed = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private var isEmpty: Bool { NoteKind.classify(note.content) == .empty }
+    private var isEmpty: Bool { note.isBlank }
 
     var body: some View {
         ZStack {
@@ -117,7 +118,7 @@ struct RailDot: View {
                         .scaleEffect(expanded ? 1.6 : 1)
                 } animation: { _ in .easeOut(duration: 1.1) }
             }
-            if let faviconURL, let icon = NSImage(contentsOf: faviconURL) {
+            if let faviconURL, let icon = ImageCache.shared.image(at: faviconURL) {
                 // A linked note wears its site's icon inside the note's color ring.
                 Image(nsImage: icon).resizable().scaledToFill()
                     .frame(width: RailMetrics.dot - 2, height: RailMetrics.dot - 2)

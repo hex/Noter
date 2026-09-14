@@ -67,3 +67,37 @@ struct InboxTests {
         #expect(FileManager.default.fileExists(atPath: bad.path))
     }
 }
+
+@Suite("Inbox attachment lookup")
+struct InboxAttachmentLookupTests {
+    @Test("Files are matched by name without extension from one directory listing")
+    func lookup() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("InboxLookup-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        for name in ["a.txt", "photo.jpeg", "notes.json"] {
+            try Data("x".utf8).write(to: root.appendingPathComponent(name))
+        }
+        let files = try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil)
+        let lookup = Inbox.attachmentLookup(files)
+        #expect(lookup["photo"]?.lastPathComponent == "photo.jpeg")
+        #expect(lookup["photo.jpeg"]?.lastPathComponent == "photo.jpeg")
+        #expect(lookup["missing"] == nil)
+    }
+}
+
+@Suite("Inbox writes")
+struct InboxWriteTests {
+    @Test("An imported note is written once, complete")
+    func singleWrite() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("InboxWrite-\(UUID().uuidString)")
+        let inbox = root.appendingPathComponent("Inbox")
+        try FileManager.default.createDirectory(at: inbox, withIntermediateDirectories: true)
+        let store = NoteStore(storage: Storage(rootDirectory: root.appendingPathComponent("Notes")))
+        try Data(#"{"title":"T","text":"hello"}"#.utf8).write(to: inbox.appendingPathComponent("d.json"))
+        let imported = try Inbox(directory: inbox, store: store).importPending()
+        #expect(imported.count == 1)
+        #expect(imported[0].tags == [Inbox.pendingTag])
+        #expect(store.notes.count == 1)
+        #expect(store.notes[0].content == "hello")
+    }
+}

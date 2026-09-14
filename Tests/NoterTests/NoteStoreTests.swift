@@ -87,6 +87,19 @@ struct NoteStoreTests {
         #expect(store.notes[0].title == "First")
     }
 
+    @Test("An update that keeps modifiedAt keeps the note's place")
+    func updateInPlace() throws {
+        let first = try store.create(title: "First", colorName: "lavender")
+        let _ = try store.create(title: "Second", colorName: "mint")
+
+        var updated = first
+        updated.content = "Edited"
+        try store.update(updated)
+
+        #expect(store.notes[1].title == "First")
+        #expect(store.notes[1].content == "Edited")
+    }
+
     @Test("Pinned notes are accessible via filter")
     func pinnedFilter() throws {
         let a = try store.create(title: "Unpinned", colorName: "lavender")

@@ -14,6 +14,7 @@ enum EnricherError: Error, Equatable {
     case binaryNotFound(String)
     case cli(String)
     case badReply(String)
+    case timedOut
 }
 
 enum Enricher {
@@ -288,37 +289,38 @@ enum Enricher {
 
     // MARK: - Process
 
+    /// Longer than any sane enrichment; a hung tool is killed rather than left as a zombie.
+    static let cliTimeout: TimeInterval = 180
+
     private static func run(_ backend: Backend, prompt: String, readsFiles: Bool) async throws -> Data {
         guard let binary = backend.tool.binary else { throw EnricherError.binaryNotFound(backend.tool.rawValue) }
         let path = try locate(binary)
-        return try await withCheckedThrowingContinuation { continuation in
-            let process = Process()
-            process.executableURL = URL(fileURLWithPath: path)
-            process.arguments = backend.arguments(prompt: prompt, readsFiles: readsFiles)
-            // A stale key in the environment would override the CLI's own login.
-            var env = ProcessInfo.processInfo.environment
-            env.removeValue(forKey: "ANTHROPIC_API_KEY")
-            env.removeValue(forKey: "CLAUDECODE")
-            process.environment = env
-            let out = Pipe()
-            process.standardOutput = out
-            process.standardError = out
-            process.terminationHandler = { _ in
-                continuation.resume(returning: out.fileHandleForReading.readDataToEndOfFile())
-            }
-            do { try process.run() } catch { continuation.resume(throwing: error) }
-        }
+        // A stale key in the environment would override the CLI's own login.
+        var env = ProcessInfo.processInfo.environment
+        env.removeValue(forKey: "ANTHROPIC_API_KEY")
+        env.removeValue(forKey: "CLAUDECODE")
+        return try await ProcessRunner.run(
+            executable: path, arguments: backend.arguments(prompt: prompt, readsFiles: readsFiles),
+            environment: env, timeout: cliTimeout
+        )
     }
 
-    /// GUI apps have no shell PATH, so look where the CLIs are usually installed, including nvm's node bins.
+    /// GUI apps have no shell PATH, so look where the CLIs are usually installed, including nvm's node
+    /// bins. Found paths are remembered; a path that stops being executable is looked up again.
+    private static var located: [String: String] = [:]
+
     static func locate(_ binary: String) throws -> String {
+        if let known = located[binary], FileManager.default.isExecutableFile(atPath: known) { return known }
         let home = FileManager.default.homeDirectoryForCurrentUser.path
-        let nodeBins = ((try? FileManager.default.contentsOfDirectory(atPath: "\(home)/.nvm/versions/node")) ?? [])
-            .sorted().reversed().map { "\(home)/.nvm/versions/node/\($0)/bin" }
-        let candidates = (["\(home)/.local/bin", "/opt/homebrew/bin", "/usr/local/bin"] + nodeBins).map { "\($0)/\(binary)" }
-        guard let found = candidates.first(where: { FileManager.default.isExecutableFile(atPath: $0) }) else {
-            throw EnricherError.binaryNotFound(binary)
+        let common = ["\(home)/.local/bin", "/opt/homebrew/bin", "/usr/local/bin"].map { "\($0)/\(binary)" }
+        var found = common.first { FileManager.default.isExecutableFile(atPath: $0) }
+        if found == nil {
+            let nodeBins = ((try? FileManager.default.contentsOfDirectory(atPath: "\(home)/.nvm/versions/node")) ?? [])
+                .sorted().reversed().map { "\(home)/.nvm/versions/node/\($0)/bin/\(binary)" }
+            found = nodeBins.first { FileManager.default.isExecutableFile(atPath: $0) }
         }
+        guard let found else { throw EnricherError.binaryNotFound(binary) }
+        located[binary] = found
         return found
     }
 }

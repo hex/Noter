@@ -24,10 +24,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         let storage = Storage(rootDirectory: Storage.resolveRootDirectory())
         store = NoteStore(storage: storage)
-        try? store.loadFromDisk()
-
-        if store.notes.isEmpty {
-            _ = try? store.create(title: "Welcome", colorName: "lavender")
+        Task { @MainActor [weak self, store = store!] in
+            try? await store.loadFromDiskInBackground()
+            if store.notes.isEmpty {
+                _ = try? store.create(title: "Welcome", colorName: "lavender")
+            }
+            // The panel was centred for an empty rail. followRailSize has already queued a
+            // top-anchored grow for the loaded notes; queue behind it and take over its animation.
+            DispatchQueue.main.async { [weak self] in
+                guard let self, !self.panelState.isExpanded else { return }
+                let frame = self.panelFrame(on: self.panel.screen ?? self.screenUnderMouse(), expanded: false)
+                NSAnimationContext.runAnimationGroup { context in
+                    context.duration = 0.25
+                    self.panel.animator().setFrame(frame, display: true)
+                }
+            }
         }
 
         panelState.onExpandedChanged = { [weak self] expanded in
@@ -105,6 +116,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             DispatchQueue.main.async {
                 guard let self else { return }
                 let frame = self.panelState.isExpanded ? self.expandedFrame() : self.collapsedFrame()
+                // Content-only changes leave the geometry alone; only a real size change animates.
+                guard frame != self.panel.frame else { self.followRailSize(); return }
                 NSAnimationContext.runAnimationGroup { context in
                     context.duration = 0.25
                     context.timingFunction = CAMediaTimingFunction(controlPoints: 0.16, 1, 0.3, 1)

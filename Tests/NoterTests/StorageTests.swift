@@ -112,3 +112,22 @@ struct StorageTests {
         #expect(all.count == 1)
     }
 }
+
+@Suite("Storage writes")
+struct StorageWriteTests {
+    @Test("A metadata-only save leaves the content file untouched")
+    func skipsUnchangedContent() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("StorageWrite-\(UUID().uuidString)")
+        let storage = Storage(rootDirectory: root)
+        var note = Note(title: "A", colorName: "yellow", content: "body")
+        try storage.save(note)
+        let md = root.appendingPathComponent("notes/\(note.id.uuidString).md")
+        let before = try FileManager.default.attributesOfItem(atPath: md.path)[.modificationDate] as! Date
+        Thread.sleep(forTimeInterval: 0.05)
+        note.title = "B"
+        try storage.save(note)
+        let after = try FileManager.default.attributesOfItem(atPath: md.path)[.modificationDate] as! Date
+        #expect(before == after)
+        #expect(try storage.load(id: note.id).title == "B")
+    }
+}

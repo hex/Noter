@@ -122,16 +122,15 @@ struct BadgeTooltipView: View {
     static let margin: CGFloat = 24
 
     private var bodyPreview: String {
-        let lines = note.content.split(whereSeparator: \.isNewline).map(String.init)
-            .map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
-        if lines.isEmpty, let excerpt = note.preview?.description { return excerpt }
-        return lines.prefix(2).joined(separator: "\n")
+        let excerpt = note.excerpt(lines: 2)
+        if excerpt.isEmpty, let description = note.preview?.description { return description }
+        return excerpt
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .firstTextBaseline, spacing: 6) {
-                if let faviconURL, let icon = NSImage(contentsOf: faviconURL) {
+                if let faviconURL, let icon = ImageCache.shared.image(at: faviconURL) {
                     Image(nsImage: icon).resizable().scaledToFill().frame(width: 12, height: 12)
                         .clipShape(RoundedRectangle(cornerRadius: 3, style: .continuous)).offset(y: 1)
                 } else {
@@ -146,6 +145,7 @@ struct BadgeTooltipView: View {
                     .font(.system(size: 11))
                     .foregroundStyle(Label.tertiary)
             }
+            let bodyPreview = bodyPreview
             if !bodyPreview.isEmpty {
                 Text(bodyPreview).font(.system(size: 11.5)).lineSpacing(2).foregroundStyle(Label.secondary).lineLimit(2)
             } else if !note.isPending {

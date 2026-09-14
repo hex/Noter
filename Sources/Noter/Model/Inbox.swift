@@ -25,9 +25,11 @@ struct Inbox {
         let fm = FileManager.default
         guard fm.fileExists(atPath: directory.path) else { return [] }
         // Shortcuts names a saved text file .txt whatever extension was asked for.
-        let drops = try fm.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
+        let files = try fm.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
+        let drops = files
             .filter { ["json", "txt"].contains($0.pathExtension) }
             .sorted { $0.lastPathComponent < $1.lastPathComponent }
+        let attachments = Self.attachmentLookup(files)
 
         var imported: [Note] = []
         for file in drops {
@@ -36,29 +38,32 @@ struct Inbox {
             var attachment: URL?
             if let reference = drop.file, !reference.isEmpty {
                 // iCloud may deliver the JSON before the file it names; wait for the next sweep.
-                guard let found = resolveFile(named: reference) else { continue }
+                guard let found = attachments[reference] else { continue }
                 attachment = found
             }
 
-            var note = try store.create(title: drop.title ?? "")
+            var note = Note(title: drop.title ?? "", colorName: store.nextColor)
             note.content = attachment == nil ? Self.content(for: drop) : Self.content(for: drop, ignoringInput: true)
             note.tags = [Self.pendingTag]
             if let attachment {
                 note.attachments = [try store.attach(fileAt: attachment, to: note.id)]
             }
-            try store.update(note)
+            try store.add(note)
             try fm.removeItem(at: file)
             imported.append(note)
         }
         return imported
     }
 
-    /// Shortcuts names a saved file by its content type, so the reference may lack the extension.
-    private func resolveFile(named reference: String) -> URL? {
-        let exact = directory.appendingPathComponent(reference)
-        if FileManager.default.fileExists(atPath: exact.path) { return exact }
-        let candidates = (try? FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)) ?? []
-        return candidates.first { $0.deletingPathExtension().lastPathComponent == reference }
+    /// Shortcuts names a saved file by its content type, so a drop may reference it with or without
+    /// the extension. One listing answers both, for every drop in the sweep.
+    static func attachmentLookup(_ files: [URL]) -> [String: URL] {
+        var lookup: [String: URL] = [:]
+        for file in files {
+            lookup[file.lastPathComponent] = file
+            lookup[file.deletingPathExtension().lastPathComponent] = lookup[file.deletingPathExtension().lastPathComponent] ?? file
+        }
+        return lookup
     }
 
     /// For a file share the raw input is just the file's name, which is noise in the body.

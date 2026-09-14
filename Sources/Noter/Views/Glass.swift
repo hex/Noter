@@ -44,44 +44,6 @@ extension View {
     }
 }
 
-/// A rounded rectangle with a pointer on its trailing edge, for a preview that points at its dot.
-struct SpeechBubble: InsettableShape {
-    var radius: CGFloat = 12
-    var pointer: CGFloat = 8
-    var inset: CGFloat = 0
-
-    func inset(by amount: CGFloat) -> SpeechBubble {
-        var copy = self
-        copy.inset += amount
-        return copy
-    }
-
-    func path(in rect: CGRect) -> Path {
-        let r = rect.insetBy(dx: inset, dy: inset)
-        let right = r.maxX - pointer
-        let rad = min(radius, min(r.width - pointer, r.height) / 2)
-        let tipY = r.midY
-        var p = Path()
-        p.move(to: CGPoint(x: r.minX + rad, y: r.minY))
-        p.addLine(to: CGPoint(x: right - rad, y: r.minY))
-        p.addArc(center: CGPoint(x: right - rad, y: r.minY + rad), radius: rad,
-                 startAngle: .degrees(-90), endAngle: .degrees(0), clockwise: false)
-        p.addLine(to: CGPoint(x: right, y: tipY - pointer))
-        p.addLine(to: CGPoint(x: r.maxX, y: tipY))
-        p.addLine(to: CGPoint(x: right, y: tipY + pointer))
-        p.addLine(to: CGPoint(x: right, y: r.maxY - rad))
-        p.addArc(center: CGPoint(x: right - rad, y: r.maxY - rad), radius: rad,
-                 startAngle: .degrees(0), endAngle: .degrees(90), clockwise: false)
-        p.addLine(to: CGPoint(x: r.minX + rad, y: r.maxY))
-        p.addArc(center: CGPoint(x: r.minX + rad, y: r.maxY - rad), radius: rad,
-                 startAngle: .degrees(90), endAngle: .degrees(180), clockwise: false)
-        p.addLine(to: CGPoint(x: r.minX, y: r.minY + rad))
-        p.addArc(center: CGPoint(x: r.minX + rad, y: r.minY + rad), radius: rad,
-                 startAngle: .degrees(180), endAngle: .degrees(270), clockwise: false)
-        p.closeSubpath()
-        return p
-    }
-}
 
 /// Label colors as plain colors so they are not vibrancy-blended into the material.
 enum Label {

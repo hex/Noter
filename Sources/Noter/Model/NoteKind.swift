@@ -36,13 +36,5 @@ enum NoteKind: Equatable {
         return URL(string: "https://www.google.com/s2/favicons?domain=\(host)&sz=64")
     }
 
-    private static func firstURL(in text: String) -> URL? {
-        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
-            return nil
-        }
-        let range = NSRange(text.startIndex..., in: text)
-        return detector.firstMatch(in: text, range: range)?.url.flatMap { url in
-            url.scheme?.hasPrefix("http") == true ? url : nil
-        }
-    }
+    private static func firstURL(in text: String) -> URL? { LinkPreview.firstURL(in: text) }
 }

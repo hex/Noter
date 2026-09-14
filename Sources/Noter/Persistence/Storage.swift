@@ -100,8 +100,12 @@ struct Storage: Sendable {
         try fm.createDirectory(at: notesDirectory, withIntermediateDirectories: true)
         try fm.createDirectory(at: metadataDirectory, withIntermediateDirectories: true)
 
+        // Most saves change only metadata (tags, pin, preview); rewriting the body would also
+        // make iCloud sync it again for nothing.
         let contentURL = notesDirectory.appendingPathComponent("\(note.id.uuidString).md")
-        try note.content.write(to: contentURL, atomically: true, encoding: .utf8)
+        if (try? String(contentsOf: contentURL, encoding: .utf8)) != note.content {
+            try note.content.write(to: contentURL, atomically: true, encoding: .utf8)
+        }
 
         let metadata = NoteMetadata(from: note)
         let metadataURL = metadataDirectory.appendingPathComponent("\(note.id.uuidString).json")
@@ -118,11 +122,12 @@ struct Storage: Sendable {
         }
 
         let metadataData = try Data(contentsOf: metadataURL)
-        let metadata = try decoder.decode(NoteMetadata.self, from: metadataData)
+        return note(from: try decoder.decode(NoteMetadata.self, from: metadataData))
+    }
 
-        let contentURL = notesDirectory.appendingPathComponent("\(id.uuidString).md")
+    private func note(from metadata: NoteMetadata) -> Note {
+        let contentURL = notesDirectory.appendingPathComponent("\(metadata.id.uuidString).md")
         let content = (try? String(contentsOf: contentURL, encoding: .utf8)) ?? ""
-
         return Note(
             id: metadata.id,
             title: metadata.title,
@@ -148,9 +153,7 @@ struct Storage: Sendable {
         var notes: [Note] = []
         for file in jsonFiles {
             let data = try Data(contentsOf: file)
-            let metadata = try decoder.decode(NoteMetadata.self, from: data)
-            let note = try load(id: metadata.id)
-            notes.append(note)
+            notes.append(note(from: try decoder.decode(NoteMetadata.self, from: data)))
         }
 
         return notes.sorted { $0.modifiedAt > $1.modifiedAt }

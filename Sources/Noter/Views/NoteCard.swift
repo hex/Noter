@@ -102,9 +102,11 @@ struct NoteCard: View {
     /// the editor sits on top. Beyond the card's maximum the editor scrolls.
     private var editor: some View {
         ZStack(alignment: .topLeading) {
+            // Past the card's tallest, the editor scrolls, so measuring more lines than fit is waste.
             Text(content.isEmpty ? " " : content)
                 .font(.system(size: 13))
                 .lineSpacing(5)
+                .lineLimit(Int(RailMetrics.cardMaxHeight / 18))
                 .padding(.horizontal, 5)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .opacity(0)
@@ -272,7 +274,7 @@ struct AttachmentStrip: View {
 
     @ViewBuilder
     private func thumbnail(_ url: URL) -> some View {
-        if let image = NSImage(contentsOf: url) {
+        if let image = ImageCache.shared.image(at: url) {
             Image(nsImage: image).resizable().scaledToFill()
         } else {
             Image(nsImage: NSWorkspace.shared.icon(forFile: url.path)).resizable().scaledToFit().padding(12)
@@ -288,9 +290,10 @@ struct Byline: View {
     var faviconURL: URL? = nil
     var body: some View {
         Button { NSWorkspace.shared.open(preview.url) } label: {
+          HStack(alignment: .top, spacing: 10) {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 6) {
-                    if let faviconURL, let icon = NSImage(contentsOf: faviconURL) {
+                    if let faviconURL, let icon = ImageCache.shared.image(at: faviconURL) {
                         Image(nsImage: icon).resizable().scaledToFill()
                             .frame(width: 16, height: 16)
                             .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
@@ -313,7 +316,19 @@ struct Byline: View {
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                if let detail = preview.detail, !detail.isEmpty {
+                    Text(detail)
+                        .font(.system(size: 11))
+                        .foregroundStyle(Label.tertiary)
+                        .lineLimit(1)
+                }
             }
+            if let imageURL, let image = ImageCache.shared.image(at: imageURL) {
+                Image(nsImage: image).resizable().scaledToFill()
+                    .frame(width: 56, height: 56)
+                    .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+            }
+          }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 8)
             .padding(.horizontal, 10)

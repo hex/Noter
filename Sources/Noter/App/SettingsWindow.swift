@@ -9,6 +9,8 @@ struct SettingsView: View {
     @Bindable var loginItem: LoginItem
     @Bindable var updater: UpdaterController
     @State private var apiKey = ""
+    /// Refreshed when the tool changes or a key is saved, not on every render: it asks the keychain.
+    @State private var keyStatus = ""
     /// Checked once per window, since it probes the disk and the keychain.
     @State private var availability: [Enricher.Tool: Bool] = Dictionary(
         uniqueKeysWithValues: Enricher.Tool.allCases.map { ($0, $0.isAvailable) }
@@ -18,14 +20,15 @@ struct SettingsView: View {
         guard let provider = settings.enricherTool.provider else { return }
         APIKey.save(apiKey.trimmingCharacters(in: .whitespacesAndNewlines), for: provider)
         availability[settings.enricherTool] = APIKey.load(provider) != nil
+        keyStatus = Self.status(for: provider)
     }
 
     private func loadKey() {
         apiKey = settings.enricherTool.provider.flatMap(APIKey.stored) ?? ""
+        keyStatus = settings.enricherTool.provider.map(Self.status) ?? ""
     }
 
-    private var keyStatus: String {
-        guard let provider = settings.enricherTool.provider else { return "" }
+    private static func status(for provider: APIProvider) -> String {
         if APIKey.stored(provider) != nil { return "Key stored in your login keychain." }
         if APIKey.fromEnvironment(provider) != nil {
             return "Using \(provider.environmentVariables[0]) from the environment. Paste a key and press Return to store one instead."

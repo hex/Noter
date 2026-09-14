@@ -18,6 +18,21 @@ struct Note: Identifiable, Codable, Sendable {
     let createdAt: Date
     var modifiedAt: Date
 
+    /// Nothing but whitespace. Cheaper than classifying the content, which the rail must not do per dot.
+    var isBlank: Bool { content.allSatisfy(\.isWhitespace) }
+
+    /// The first `lines` non-empty lines, trimmed, stopping as soon as it has them.
+    func excerpt(lines max: Int) -> String {
+        var out: [Substring] = []
+        for line in content.split(omittingEmptySubsequences: true, whereSeparator: \.isNewline) {
+            let trimmed = line.drop(while: \.isWhitespace)
+            guard !trimmed.isEmpty else { continue }
+            out.append(trimmed.trimmingCharacters(in: .whitespaces)[...])
+            if out.count == max { break }
+        }
+        return out.joined(separator: "\n")
+    }
+
     init(
         id: UUID = UUID(),
         title: String,

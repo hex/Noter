@@ -53,4 +53,14 @@ struct LinkPreviewTests {
         #expect(LinkPreview.firstURL(in: "see\nhttps://a.example/x and https://b.example")?.host() == "a.example")
         #expect(LinkPreview.firstURL(in: "no links") == nil)
     }
+
+    @Test("A title that repeats the site name loses the prefix")
+    func titlePrefix() {
+        let html = """
+        <meta property="og:site_name" content="GitHub">
+        <meta property="og:title" content="GitHub - sparkle-project/Sparkle: A software update framework">
+        """
+        #expect(LinkPreview.parseHTML(html, url: URL(string: "https://github.com/x")!).title == "sparkle-project/Sparkle: A software update framework")
+        #expect(LinkPreview.parseHTML("<title>GitHub Actions</title>", url: URL(string: "https://github.com/x")!).title == "GitHub Actions")
+    }
 }
