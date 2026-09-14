@@ -24,27 +24,27 @@
     <text x="644" y="330" font-family="-apple-system, 'SF Pro Text', 'Segoe UI', Helvetica, Arial, sans-serif" font-size="32" fill="#6B6580">Sticky notes at the edge of your Mac screen.</text>
     <text x="644" y="376" font-family="-apple-system, 'SF Pro Text', 'Segoe UI', Helvetica, Arial, sans-serif" font-size="32" fill="#6B6580">Share from your iPhone; it lands on your Mac,</text>
     <text x="644" y="422" font-family="-apple-system, 'SF Pro Text', 'Segoe UI', Helvetica, Arial, sans-serif" font-size="32" fill="#6B6580">titled and summarized.</text>
+  <rect x="1436" y="117" width="48" height="380" rx="24" fill="#FFFFFF" fill-opacity="0.7" stroke="#E4DFD8" stroke-width="2"/>
   </g>
-  <rect x="1436" y="96" width="48" height="422" rx="24" fill="#FFFFFF" fill-opacity="0.7" stroke="#E4DFD8" stroke-width="2"/>
-    <circle cx="1460" cy="132" r="0" fill="#F6C445" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
-      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="3.2s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
+    <circle cx="1460" cy="157" r="0" fill="#F6C445" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
+      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="1.40s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
     </circle>
-    <circle cx="1460" cy="182" r="0" fill="#F28B82" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
-      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="3.4200000000000004s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
+    <circle cx="1460" cy="207" r="0" fill="#F28B82" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
+      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="1.58s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
     </circle>
-    <circle cx="1460" cy="232" r="0" fill="#F7A9C4" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
-      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="3.64s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
+    <circle cx="1460" cy="257" r="0" fill="#F7A9C4" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
+      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="1.76s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
     </circle>
-    <circle cx="1460" cy="282" r="0" fill="#B39DDB" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
-      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="3.8600000000000003s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
+    <circle cx="1460" cy="307" r="0" fill="#B39DDB" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
+      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="1.94s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
     </circle>
-    <circle cx="1460" cy="332" r="0" fill="#8AB4F8" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
-      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="4.08s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
+    <circle cx="1460" cy="357" r="0" fill="#8AB4F8" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
+      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="2.12s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
     </circle>
-    <circle cx="1460" cy="382" r="0" fill="#7ED3B2" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
-      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="4.300000000000001s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
+    <circle cx="1460" cy="407" r="0" fill="#7ED3B2" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
+      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="2.30s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
     </circle>
-    <circle cx="1460" cy="432" r="0" fill="#FFB86B" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
-      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="4.5200000000000005s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
+    <circle cx="1460" cy="457" r="0" fill="#FFB86B" stroke="#ffffff" stroke-width="3" stroke-opacity="0.8">
+      <animate attributeName="r" values="0;20;16" keyTimes="0;0.6;1" begin="2.48s" dur="0.45s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1; 0.4 0 0.6 1"/>
     </circle>
 </svg>
