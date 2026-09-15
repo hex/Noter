@@ -2,6 +2,7 @@
 // ABOUTME: Uses a DispatchSource on the directory so iCloud Drive syncs trigger an import within a second.
 
 import AppKit
+import NoterKit
 import Foundation
 
 @MainActor

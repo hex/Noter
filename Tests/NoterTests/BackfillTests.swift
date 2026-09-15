@@ -4,6 +4,7 @@
 import Foundation
 import Testing
 @testable import Noter
+@testable import NoterKit
 
 @Suite("Backfill")
 struct BackfillTests {

@@ -24,9 +24,14 @@ runtime; change `DEVELOPMENT_TEAM` in `project.yml` to build with another accoun
 `YYYY.M.PATCH` (`MARKETING_VERSION`) with a date-encoded build number (`CURRENT_PROJECT_VERSION`)
 that Sparkle compares to offer updates; both live in `project.yml`.
 
-`Package.swift` stays for the tests only: `swift test`.
+The platform-neutral model, storage and enrichment code is the `NoterKit` package in `NoterKit/`,
+shared with the iOS app. `swift test` in the repo root runs the Mac tests; `swift test` in `NoterKit/`
+runs the shared model, storage and enrichment tests.
 
 ## Send things from your iPhone
+
+Notes live in iCloud Drive under Noter; a library from an earlier version is copied there on first
+launch and left in place.
 
 Noter watches `iCloud Drive/Shortcuts/Noter/Inbox`, the folder Shortcuts' Save File action writes to. Anything the phone drops there as JSON becomes a note, and
 a model writes a title, a four-line summary, and tags for it.
@@ -67,6 +72,39 @@ beside it as `<timestamp>-<name>`.
 ```
 
 Any key may be missing or empty; `input` is used when `text` is empty. A drop that is not valid JSON is left in the folder.
+
+## Notes from the shell and from agents
+
+The app binary doubles as a command line when invoked as `noter`. The Homebrew cask links it into
+your path; from a local build, symlink it yourself:
+
+```sh
+ln -s /Applications/Noter.app/Contents/MacOS/Noter /usr/local/bin/noter
+```
+
+Output is JSON, ids may be shortened to a unique prefix, and `-` reads a body from stdin. The
+running app notices every write and updates the rail; the app does not need to be running.
+
+```sh
+noter list                      # active notes, newest first, with excerpts
+noter list --archived           # or --all
+noter show 6950                 # one note with its markdown body
+noter add --title "Groceries" --tags home,food --color mint "milk\neggs"
+pbpaste | noter add --title "Clipboard" -
+noter edit 6950 --content - < body.md
+noter edit 6950 --tags a,b --pin
+noter archive 6950 | noter unarchive 6950 | noter delete 6950
+```
+
+`noter mcp` serves the same verbs as MCP tools over stdio (`list_notes`, `get_note`, `add_note`,
+`edit_note`, `archive_note`, `unarchive_note`, `delete_note`):
+
+```sh
+claude mcp add noter -- noter mcp
+```
+
+Writes from the shell skip enrichment: the caller already chose the title and tags. Drop a JSON
+file in the inbox instead when you want the model to write them.
 
 ## Settings
 

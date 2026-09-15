@@ -11,6 +11,8 @@ packages:
   Sparkle:
     url: https://github.com/sparkle-project/Sparkle
     from: "2.6.0"
+  NoterKit:
+    path: NoterKit
 targets:
   Noter:
     type: application
@@ -24,6 +26,7 @@ targets:
       - package: swift-markdown
         product: Markdown
       - package: Sparkle
+      - package: NoterKit
     info:
       path: Info.plist
       properties:
@@ -36,10 +39,18 @@ targets:
         NSHumanReadableCopyright: "hexul"
         SUFeedURL: https://raw.githubusercontent.com/hex/Noter/main/appcast.xml
         SUPublicEDKey: QM7biud8LkYn5fHBd43Tb3SVYKXVdW7C4btxgLs4IXg=
+        NSUbiquitousContainers:
+          iCloud.com.hexul.noter:
+            NSUbiquitousContainerIsDocumentScopePublic: true
+            NSUbiquitousContainerName: Noter
+            NSUbiquitousContainerSupportedFolderLevels: Any
     entitlements:
       path: Noter.entitlements
       properties:
         com.apple.security.app-sandbox: false
+        com.apple.developer.icloud-container-identifiers: [iCloud.com.hexul.noter]
+        com.apple.developer.icloud-services: [CloudDocuments]
+        com.apple.developer.ubiquity-container-identifiers: [iCloud.com.hexul.noter]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.hexul.noter
@@ -48,6 +59,7 @@ targets:
         SWIFT_VERSION: "5.9"
         CODE_SIGN_STYLE: Manual
         CODE_SIGN_IDENTITY: "Developer ID Application"
+        PROVISIONING_PROFILE_SPECIFIER: "Noter Developer ID"
         DEVELOPMENT_TEAM: "7G4UQW35EL"
         ENABLE_HARDENED_RUNTIME: YES
         GENERATE_INFOPLIST_FILE: NO

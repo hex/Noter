@@ -26,6 +26,18 @@
 	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>hexul</string>
+	<key>NSUbiquitousContainers</key>
+	<dict>
+		<key>iCloud.com.hexul.noter</key>
+		<dict>
+			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
+			<true/>
+			<key>NSUbiquitousContainerName</key>
+			<string>Noter</string>
+			<key>NSUbiquitousContainerSupportedFolderLevels</key>
+			<string>Any</string>
+		</dict>
+	</dict>
 	<key>SUFeedURL</key>
 	<string>https://raw.githubusercontent.com/hex/Noter/main/appcast.xml</string>
 	<key>SUPublicEDKey</key>

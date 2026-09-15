@@ -4,6 +4,7 @@
 import Testing
 import AppKit
 @testable import Noter
+@testable import NoterKit
 
 @Suite("Pastel Colors")
 struct PastelColorsTests {
@@ -26,19 +27,6 @@ struct PastelColorsTests {
         }
     }
 
-    @Test("Next color cycles through all colors and wraps around")
-    func nextColorCycles() {
-        var current = PastelColor.allCases.first!
-        var visited = Set<PastelColor>()
-
-        for _ in 0..<PastelColor.allCases.count {
-            visited.insert(current)
-            current = current.next
-        }
-
-        #expect(visited.count == PastelColor.allCases.count)
-        #expect(current == PastelColor.allCases.first!)
-    }
 
     @Test("Known hex values for lavender")
     func lavenderHexValues() {

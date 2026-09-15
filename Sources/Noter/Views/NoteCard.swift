@@ -2,6 +2,7 @@
 // ABOUTME: Header, tags, source byline, thumbnails, then the summary as body; hover reveals close, pin, color, archive.
 
 import SwiftUI
+import NoterKit
 
 struct NoteCard: View {
     let note: Note

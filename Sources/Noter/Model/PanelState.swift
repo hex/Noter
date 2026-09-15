@@ -2,6 +2,7 @@
 // ABOUTME: Bridges SwiftUI views and AppKit panel frame management.
 
 import Foundation
+import NoterKit
 import Observation
 
 @Observable

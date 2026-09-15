@@ -4,6 +4,7 @@
 import Testing
 import Foundation
 @testable import Noter
+@testable import NoterKit
 
 @Suite("Note Kind")
 struct NoteKindTests {

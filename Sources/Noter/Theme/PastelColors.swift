@@ -2,24 +2,9 @@
 // ABOUTME: Saturated Post-it style colors with dark text for readability.
 
 import AppKit
+import NoterKit
 
-enum PastelColor: String, CaseIterable, Codable, Sendable {
-    case lavender
-    case mint
-    case peach
-    case sky
-    case rose
-    case lemon
-    case coral
-    case sage
-
-    /// The palette entry after `name`, wrapping around; unknown names start from the first.
-    static func next(after name: String) -> PastelColor {
-        let all = allCases
-        guard let i = all.firstIndex(where: { $0.rawValue == name }) else { return all[0] }
-        return all[(i + 1) % all.count]
-    }
-
+extension PastelColor {
     /// Saturated background — the full note body color, like a real sticky note.
     var background: NSColor {
         switch self {
@@ -48,12 +33,6 @@ enum PastelColor: String, CaseIterable, Codable, Sendable {
         }
     }
 
-    var next: PastelColor {
-        let all = Self.allCases
-        let index = all.firstIndex(of: self)!
-        let nextIndex = all.index(after: index)
-        return nextIndex == all.endIndex ? all[all.startIndex] : all[nextIndex]
-    }
 }
 
 extension NSColor {

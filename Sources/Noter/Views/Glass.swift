@@ -2,6 +2,7 @@
 // ABOUTME: Applied to the rail strip, the note card, and the hover preview.
 
 import SwiftUI
+import NoterKit
 
 struct GlassSurface<S: InsettableShape>: ViewModifier {
     let shape: S

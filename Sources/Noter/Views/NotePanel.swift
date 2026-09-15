@@ -2,6 +2,7 @@
 // ABOUTME: The strip always stays at the screen edge; the card fades and slides in to its left.
 
 import SwiftUI
+import NoterKit
 
 struct NotePanel: View {
     @Bindable var store: NoteStore

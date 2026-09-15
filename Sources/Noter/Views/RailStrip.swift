@@ -2,6 +2,7 @@
 // ABOUTME: Dots are the note color; empty notes are rings; the open note wears a halo.
 
 import SwiftUI
+import NoterKit
 
 struct RailStrip: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion

@@ -2,6 +2,7 @@
 // ABOUTME: Provides New Note and Quit actions since there's no Dock icon.
 
 import AppKit
+import NoterKit
 
 final class StatusBarController: NSObject {
     private var statusItem: NSStatusItem?

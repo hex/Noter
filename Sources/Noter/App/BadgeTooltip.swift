@@ -2,6 +2,7 @@
 // ABOUTME: Replaces system tooltips, which AppKit suppresses while the app is inactive.
 
 import AppKit
+import NoterKit
 import SwiftUI
 
 @MainActor

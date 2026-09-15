@@ -2,6 +2,7 @@
 // ABOUTME: Creates the NoterPanel anchored to the right edge of the active screen.
 
 import AppKit
+import NoterKit
 import SwiftUI
 
 @MainActor
@@ -16,6 +17,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let updater = UpdaterController()
     private let tooltip = BadgeTooltip()
     private var inboxWatcher: InboxWatcher?
+    private var libraryWatcher: LibraryWatcher?
     private var currentScreenID: CGDirectDisplayID?
     private var mouseMonitor: Any?
     private var hostingView: NSView?
@@ -25,8 +27,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let storage = Storage(rootDirectory: Storage.resolveRootDirectory())
         store = NoteStore(storage: storage)
         Task { @MainActor [weak self, store = store!] in
+            // A library from before the iCloud container is copied in before the first read. If that
+            // copy fails, no Welcome note is written: a note in the container would stop the next attempt.
+            var migrated = true
+            do {
+                try await Task.detached { try Storage.migrate(from: Storage.legacyRootDirectory(), to: storage.rootDirectory) }.value
+            } catch {
+                migrated = false
+                NSLog("Noter: library migration failed: \(error)")
+            }
             try? await store.loadFromDiskInBackground()
-            if store.notes.isEmpty {
+            if store.notes.isEmpty, migrated {
                 _ = try? store.create(title: "Welcome", colorName: "lavender")
             }
             // The panel was centred for an empty rail. followRailSize has already queued a
@@ -57,6 +68,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         statusBar.onSettings = { [weak self] in self?.openSettings() }
         inboxWatcher = InboxWatcher(inbox: Inbox(directory: Storage.inboxDirectory(), store: store))
         inboxWatcher?.start()
+        libraryWatcher = LibraryWatcher(store: store, directory: storage.metadataDirectory)
+        libraryWatcher?.start()
         statusBar.onToggleArchived = { [weak self] in
             guard let self else { return false }
             self.panelState.showArchived.toggle()

@@ -2,6 +2,7 @@
 // ABOUTME: Kept as a single instance; opening it brings the accessory app forward.
 
 import AppKit
+import NoterKit
 import SwiftUI
 
 struct SettingsView: View {

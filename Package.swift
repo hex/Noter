@@ -8,6 +8,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-markdown.git", from: "0.4.0"),
         .package(url: "https://github.com/sparkle-project/Sparkle", from: "2.6.0"),
+        .package(path: "NoterKit"),
     ],
     targets: [
         .executableTarget(
@@ -15,6 +16,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Markdown", package: "swift-markdown"),
                 .product(name: "Sparkle", package: "Sparkle"),
+                .product(name: "NoterKit", package: "NoterKit"),
             ],
             path: "Sources/Noter"
         ),

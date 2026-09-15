@@ -2,6 +2,7 @@
 // ABOUTME: Code fence beats checklist beats link; prose and empty notes show color only.
 
 import Foundation
+import NoterKit
 
 enum NoteKind: Equatable {
     case empty
