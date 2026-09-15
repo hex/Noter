@@ -5,6 +5,17 @@
     <link>https://raw.githubusercontent.com/hex/Noter/main/appcast.xml</link>
     <description>Noter updates</description>
     <language>en</language>
+    <item>
+      <title>Version 2026.9.3</title>
+      <pubDate>Tue, 15 Sep 2026 05:58:14 +0000</pubDate>
+      <sparkle:version>2026091501</sparkle:version>
+      <sparkle:shortVersionString>2026.9.3</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <enclosure url="https://github.com/hex/Noter/releases/download/v2026.9.3/Noter-2026.9.3.zip"
+                 length="5536157"
+                 type="application/octet-stream"
+                 sparkle:edSignature="adFduxV1YVGZl+NuFonqaf1/IDMCjympSXrKnSVO/ybfmIgXNtoeIOKmD7J/cb+M64I5GexIN2ruExlLcLBPDg==" />
+    </item>
         <item>
             <title>Version 2026.9.2</title>
             <pubDate>Mon, 14 Sep 2026 19:26:46 +0000</pubDate>

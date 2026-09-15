@@ -54,8 +54,8 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.hexul.noter
-        MARKETING_VERSION: "2026.9.2"
-        CURRENT_PROJECT_VERSION: "2026091403"
+        MARKETING_VERSION: "2026.9.3"
+        CURRENT_PROJECT_VERSION: "2026091501"
         SWIFT_VERSION: "5.9"
         CODE_SIGN_STYLE: Manual
         CODE_SIGN_IDENTITY: "Developer ID Application"
